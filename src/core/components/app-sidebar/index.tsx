@@ -72,7 +72,7 @@ export function AppSidebar() {
     }, []);
 
     return (
-        <Sidebar>
+        <Sidebar className="drop-shadow-lg">
             <SidebarHeader>
                 <h1 className="font-semibold uppercase tracking-widest text-center">
                     Tailwind Skeleton
