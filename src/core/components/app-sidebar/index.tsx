@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Sidebar,
     SidebarContent,
@@ -10,6 +12,7 @@ import { CodeIcon } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import colors from "tailwindcss/colors";
+import { Draggable } from "../drag/draggable";
 
 type ColorName = keyof typeof colors;
 type ColorValue =
@@ -54,7 +57,6 @@ export function AppSidebar() {
         name: "neutral",
         value: "200",
     });
-
     const colorsList = useMemo(() => {
         const list = [];
         const keys = Object.keys(colors);
@@ -78,17 +80,15 @@ export function AppSidebar() {
                     Tailwind Skeleton
                 </h1>
             </SidebarHeader>
-            <SidebarContent>
+            <SidebarContent className="overflow-hidden">
                 <SidebarGroup>
                     <SidebarHeader className="font-semibold lowercase">
                         Shapes
                     </SidebarHeader>
                     <div className="grid grid-cols-2 gap-2 place-content-center">
-                        <div className="w-full flex items-center justify-center aspect-square bg-neutral-100 border border-neutral-200 rounded-md">
+                        <Draggable id="shape-1">
                             <div
-                                className={
-                                    "w-1/2 aspect-square rounded-md animate-pulse"
-                                }
+                                className="w-1/2 aspect-square rounded-md animate-pulse"
                                 style={{
                                     backgroundColor:
                                         colors[activeColor.name][
@@ -96,8 +96,8 @@ export function AppSidebar() {
                                         ],
                                 }}
                             />
-                        </div>
-                        <div className="w-full flex items-center justify-center aspect-square bg-neutral-100 border border-neutral-200 rounded-md">
+                        </Draggable>
+                        <Draggable id="shape-2">
                             <div
                                 className="w-1/2 aspect-square rounded-full animate-pulse"
                                 style={{
@@ -107,7 +107,7 @@ export function AppSidebar() {
                                         ],
                                 }}
                             />
-                        </div>
+                        </Draggable>
                     </div>
                 </SidebarGroup>
                 <SidebarGroup>
