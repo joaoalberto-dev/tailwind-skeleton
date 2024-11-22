@@ -1,6 +1,32 @@
 "use client";
 
+import React, {
+    type ReactElement,
+    createElement,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
+
 function Canvas() {
+    const [elements, setElements] = useState<ReactElement[]>([]);
+    const [_, setSelectedElement] = useState<HTMLDivElement | null>(null);
+    const canvasRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (canvasRef.current) {
+            canvasRef.current.addEventListener("click", (ev) => {
+                const target = ev.target as HTMLDivElement;
+
+                if (target && target?.id !== "canvas") {
+                    setSelectedElement(target);
+                } else {
+                    setSelectedElement(null);
+                }
+            });
+        }
+    }, []);
+
     function onDragOver(ev: React.DragEvent<HTMLDivElement>) {
         ev.preventDefault();
         ev.dataTransfer.dropEffect = "copy";
@@ -10,10 +36,22 @@ function Canvas() {
         const data = ev.dataTransfer.getData("text/html");
 
         if (data) {
-            const element = document.getElementById(data)?.cloneNode(true);
+            const element = document
+                .getElementById(data)
+                ?.cloneNode(true) as HTMLElement;
 
             if (element) {
-                ev.currentTarget.appendChild(element);
+                const child = element.childNodes[0] as HTMLElement;
+
+                const reactElement = createElement(
+                    element.nodeName.toLowerCase(),
+                    {
+                        className: `${child.classList.value} col-start-2 row-start-2`,
+                        id: element.id,
+                    },
+                );
+
+                setElements((prev) => [...prev, reactElement]);
             }
         }
     }
@@ -24,10 +62,18 @@ function Canvas() {
             [background-image:radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:16px_16px]"
         >
             <div
-                className="w-[300px] h-[300px] bg-white border border-neutral-200 rounded-md drop-shadow-xl"
+                id="canvas"
+                ref={canvasRef}
+                className="w-[300px] h-[300px] bg-white border border-neutral-200 rounded-md drop-shadow-xl grid grid-cols-10 grid-rows-10"
                 onDrop={onDrop}
                 onDragOver={onDragOver}
-            />
+            >
+                {elements.map((element) => (
+                    <React.Fragment key={element.props.id}>
+                        {element}
+                    </React.Fragment>
+                ))}
+            </div>
         </div>
     );
 }
