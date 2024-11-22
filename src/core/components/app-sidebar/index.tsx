@@ -88,7 +88,7 @@ export function AppSidebar() {
                     <div className="grid grid-cols-2 gap-2 place-content-center">
                         <Draggable id="shape-1">
                             <div
-                                className="w-[80px] aspect-square rounded-md animate-pulse"
+                                className={`w-[80px] aspect-square rounded-md animate-pulse bg-${activeColor.name}-${activeColor.value}`}
                                 style={{
                                     backgroundColor:
                                         colors[activeColor.name][
@@ -99,7 +99,7 @@ export function AppSidebar() {
                         </Draggable>
                         <Draggable id="shape-2">
                             <div
-                                className="w-[80px] aspect-square rounded-full animate-pulse"
+                                className={`w-[80px] aspect-square rounded-full animate-pulse bg-${activeColor.name}-${activeColor.value}`}
                                 style={{
                                     backgroundColor:
                                         colors[activeColor.name][
